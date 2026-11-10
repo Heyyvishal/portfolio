@@ -1,26 +1,214 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+
+  --color-background: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-surface-2: #efede6;
+  --color-line: #e2ded4;
+  --color-line-soft: #edeae3;
+
+  --color-foreground: #17161c;
+  --color-muted: #56524b;
+  --color-faint: #736d63;
+
+  --color-accent: #3b40e0;
+  --color-accent-strong: #2f33bf;
+  --color-accent-soft: #eef0ff;
+  --color-accent-ink: #ffffff;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  color: var(--color-foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.75s var(--ease-out-expo),
+    transform 0.75s var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Faint technical grid used behind the hero and contact panel */
+.grid-mask {
+  background-image:
+    linear-gradient(to right, rgba(23, 22, 28, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(23, 22, 28, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(
+    120% 90% at 50% 0%,
+    #000 10%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 10%, transparent 72%);
+}
+
+.dot-grid {
+  background-image: radial-gradient(
+    rgba(23, 22, 28, 0.11) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
+}
+
+/* Nav link with a sliding underline */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 1.5px;
+  width: 100%;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease-out-expo);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.nav-link[data-active="true"] {
+  color: var(--color-foreground);
+}
+
+/* Hand-drawn underline beneath the hero headline */
+.hero-underline path {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: draw-line 1.1s var(--ease-out-expo) 0.55s forwards;
+}
+
+/* Gentle hero motion */
+.float-slow {
+  animation: float-soft 8s ease-in-out infinite;
+}
+.float-slower {
+  animation: float-soft 11s ease-in-out 0.8s infinite;
+}
+.spin-slow {
+  animation: spin-slow 28s linear infinite;
+}
+.pulse-ring {
+  animation: pulse-ring 5.5s ease-out infinite;
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+/* Project media zoom on hover, with a safe always-visible default */
+.project-media {
+  transition: transform 0.75s var(--ease-out-expo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .project-media {
+    transform: scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .nav-link::after {
+    transition: none;
+  }
+  .hero-underline path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .float-slow,
+  .float-slower,
+  .spin-slow,
+  .pulse-ring,
+  .animate-ping {
+    animation: none !important;
+  }
+  .project-media {
+    transition: none;
+  }
+}
+
+/* Keep content visible when JavaScript is unavailable */
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

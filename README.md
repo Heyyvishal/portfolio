@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vishal — Freelance Web Developer Portfolio
+
+A premium, light-themed portfolio for Vishal, a freelance web developer based in
+Chennai, India. The site focuses on modern business websites, landing pages,
+custom web applications and responsive redesigns.
+
+Built with the **Next.js App Router**, **React**, **TypeScript** and
+**Tailwind CSS v4**.
+
+## Features
+
+- Warm off-white design system with an indigo accent, oversized editorial type
+  and generous whitespace
+- Sticky navigation with scroll-spy links, a scroll progress indicator and a
+  working, accessible mobile menu
+- Editorial hero with an animated CSS/HTML interface preview
+- Selected work showcase, including **Prathi Fitness Studio** as a private
+  client project with no live link and no confidential data
+- A clearly labelled concept/demo slot — no fabricated clients or results
+- Four service offerings, an About section, a four-step process timeline and a
+  contact panel with a `mailto:` CTA and copy-email button
+- Scroll-reveal animations, focus states and touch-friendly interactions that
+  respect `prefers-reduced-motion`
+- Responsive from 320px through tablet and desktop widths
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev     # start the development server
+npm run build   # create a production build
+npm run start   # serve the production build
+npm run lint    # run ESLint
+```
 
-## Learn More
+## Editing your details
 
-To learn more about Next.js, take a look at the following resources:
+Site content lives in [`lib/site.ts`](lib/site.ts):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `email` is the public contact address (`svishal0820@gmail.com`).
+- `availability.open` controls the availability indicator. Keep it `false`
+  unless you are actively taking on new work.
+- Projects, services, toolkit items and process steps are defined there.
+- Prathi Fitness Studio is intentionally described at a high level. Do not add
+  a live URL, private screenshots, member data or credentials.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project structure
 
-## Deploy on Vercel
+```
+app/
+  layout.tsx        # Metadata, fonts, header/footer shell
+  page.tsx          # Composes the sections
+  globals.css       # Theme tokens, base styles and animations
+  icon.svg          # Favicon
+components/
+  site-header.tsx   # Sticky nav, scroll spy, progress bar, mobile menu (client)
+  hero.tsx
+  work.tsx          # Private client project + concept/demo card
+  services.tsx
+  about.tsx
+  process.tsx
+  contact.tsx
+  copy-email-button.tsx
+  site-footer.tsx
+  reveal.tsx        # Scroll-reveal wrapper (client)
+  section-heading.tsx
+  icons.tsx
+lib/
+  site.ts           # Site config + content
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The site is static and contains no analytics, forms, social links or invented
+contact details. Deploy only after reviewing the content and contact details.
